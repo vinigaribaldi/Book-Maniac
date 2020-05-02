@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 function BookItem({ book, onDelete }) {
   return (
     <li>
-      {book}
+      {book.title}
       <button onClick={onDelete} type="button">Remover</button>
     </li>
   );

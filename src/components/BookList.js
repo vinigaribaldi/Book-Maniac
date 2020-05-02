@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { debounce } from 'lodash';
+import { ListGroup } from 'react-bootstrap';
 
 import BookItem from './BookItem';
 import Api from '../Api';
 
 class BookList extends Component {
   state = {
-    newBook: '',
-    books: []
+    searchString: '',
+    books: [],
+    searchResult: []
   };
 
-  // Executado assim que o componente aparece em tela
   componentDidMount() {
     const books = localStorage.getItem('books');
 
@@ -19,20 +20,18 @@ class BookList extends Component {
     }
   }
 
-  // Executado sempre que houver alterações nas props ou estado (prevProps, prevState)
   componentDidUpdate(_, prevState) {
     if (prevState.books !== this.state.books) {
       localStorage.setItem('books', JSON.stringify(this.state.books));
     }
   }
 
-  // SOMENTE BUSCAR QUANDO DIGITOU MAIS DE 3 CARACTERES
   searchTitle = debounce(async (title) => {
+    if (title.length < 3) {
+      this.setState({ searchResult: [] });
+      return;
+    }
     const { data } = await Api.get(`search.json?title=${title}&limit=5`);
-
-    console.log(title);
-    console.log(data.docs);
-    console.log(data.docs.length);
 
     const result = data.docs.filter((doc) => doc.isbn && doc.isbn.length).map((doc) => ({
       title: doc.title,
@@ -40,33 +39,29 @@ class BookList extends Component {
       id: doc.isbn[0]
     }))
 
-    //https://openlibrary.org/api/books?bibkeys=ISBN:9780395595114
-
-    console.log(result);
-  }, 500);
+    this.setState({ searchResult: result });
+  }, 350);
 
   handleInputChange = e => {
+    this.setState({ searchString: e.target.value });
     this.searchTitle(e.target.value);
-
-    this.setState({ newBook: e.target.value });
   }
 
-  handleSubmit = e => {
-    e.preventDefault();
-
+  handleAdd = (book) => {
     this.setState({
-      books: [...this.state.books, this.state.newBook],
-      newBook: ''
+      books: [...this.state.books, {...book}],
+      searchResult: [],
+      searchString: ''
     });
   }
 
   handleDelete = (book) => {
-    this.setState({ books: this.state.books.filter(b => b !== book) });
+    this.setState({ books: this.state.books.filter(b => b.id !== book.id) });
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <div>
         <ul>
           {this.state.books.map(book => (
             <BookItem
@@ -78,11 +73,19 @@ class BookList extends Component {
         </ul>
         <input
           type="text"
+          placeholder="Search book by title"
           onChange={this.handleInputChange}
-          value={this.state.newBook}
+          value={this.state.searchString}
         />
-        <button type="submit">Enviar</button>
-      </form>
+        
+        <ListGroup>
+          {this.state.searchResult.map(book => (
+            <ListGroup.Item action onClick={() => this.handleAdd(book)} key={book.id}>
+              {`${book.title} - ${book.author}`}
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+      </div>
     );
   }
 }
