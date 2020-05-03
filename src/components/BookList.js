@@ -91,7 +91,7 @@ class BookList extends Component {
         <ListGroup>
           {this.state.searchResult.map(book => (
             <ListGroup.Item action onClick={() => this.handleAdd(book)} key={book.id}>
-              {`${book.title} - ${book.author.join(', ')}`}
+              {`${book.title} - ${book.author && book.author.join(', ')}`}
             </ListGroup.Item>
           ))}
         </ListGroup>
