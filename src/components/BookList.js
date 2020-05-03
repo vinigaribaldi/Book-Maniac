@@ -31,12 +31,14 @@ class BookList extends Component {
       this.setState({ searchResult: [] });
       return;
     }
-    const { data } = await Api.get(`search.json?title=${title}&limit=5`);
+
+    const { data } = await Api.get(`search.json?title=${title}&limit=10`);
 
     const result = data.docs.filter((doc) => doc.isbn && doc.isbn.length).map((doc) => ({
       title: doc.title,
       author: doc.author_name,
-      id: doc.isbn[0]
+      id: doc.isbn[0],
+      read: false
     }))
 
     this.setState({ searchResult: result });
@@ -48,25 +50,33 @@ class BookList extends Component {
   }
 
   handleAdd = (book) => {
-    this.setState({
-      books: [...this.state.books, {...book}],
+    this.setState((prevState) => ({
+      books: [...prevState.books, {...book}],
       searchResult: [],
       searchString: ''
-    });
+    }));
   }
 
   handleDelete = (book) => {
-    this.setState({ books: this.state.books.filter(b => b.id !== book.id) });
+    this.setState((prevState) => ({ books: prevState.books.filter(b => b.id !== book.id) }));
+  }
+
+  handleRead = (book) => {
+    const newBook = {...book, read: !book.read};
+
+    this.handleDelete(book);
+    this.handleAdd(newBook);
   }
 
   render() {
     return (
       <div>
         <ul>
-          {this.state.books.map(book => (
+          {this.state.books.sort((a, b) => a.title < b.title ? -1 : 1).map(book => (
             <BookItem
               key={book}
               book={book}
+              toggleRead={() => this.handleRead(book)}
               onDelete={() => this.handleDelete(book)}
             />
           ))}
@@ -81,7 +91,7 @@ class BookList extends Component {
         <ListGroup>
           {this.state.searchResult.map(book => (
             <ListGroup.Item action onClick={() => this.handleAdd(book)} key={book.id}>
-              {`${book.title} - ${book.author}`}
+              {`${book.title} - ${book.author.join(', ')}`}
             </ListGroup.Item>
           ))}
         </ListGroup>
