@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { debounce } from 'lodash';
-import { ListGroup } from 'react-bootstrap';
+import { ListGroup, Card, Container, Row, Col } from 'react-bootstrap';
 
 import BookItem from './BookItem';
 import Api from '../Api';
+import './BookList.scss';
 
 class BookList extends Component {
   state = {
@@ -38,7 +39,8 @@ class BookList extends Component {
       title: doc.title,
       author: doc.author_name,
       id: doc.isbn[0],
-      read: false
+      read: false,
+      readOn: null
     }))
 
     this.setState({ searchResult: result });
@@ -62,8 +64,8 @@ class BookList extends Component {
   }
 
   handleRead = (book) => {
-    const newBook = {...book, read: !book.read};
-
+    const newBook = {...book, read: !book.read, readOn: !book.read ? new Date() : null};
+    
     this.handleDelete(book);
     this.handleAdd(newBook);
   }
@@ -71,7 +73,13 @@ class BookList extends Component {
   render() {
     return (
       <div>
-        <ul>
+        <Container className="bookList">
+          <Row>
+            <Col xs={2} sm={1}><b>Read</b></Col>
+            <Col xs={4} sm={6}><b>Title</b></Col>
+            <Col xs={4} sm={4}><b>Author</b></Col>
+            <Col xs={2} sm={1}><b>Remove</b></Col>
+          </Row>
           {this.state.books.sort((a, b) => a.title < b.title ? -1 : 1).map(book => (
             <BookItem
               key={book}
@@ -80,21 +88,33 @@ class BookList extends Component {
               onDelete={() => this.handleDelete(book)}
             />
           ))}
-        </ul>
-        <input
-          type="text"
-          placeholder="Search book by title"
-          onChange={this.handleInputChange}
-          value={this.state.searchString}
-        />
+        </Container>
         
-        <ListGroup>
-          {this.state.searchResult.map(book => (
-            <ListGroup.Item action onClick={() => this.handleAdd(book)} key={book.id}>
-              {`${book.title} - ${book.author && book.author.join(', ')}`}
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
+        <div className="bookSearch">
+          <Container>
+            <Row>
+              <Col>
+                <input
+                  type="text"
+                  placeholder="Search book by title"
+                  onChange={this.handleInputChange}
+                  value={this.state.searchString}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <ListGroup>
+                  {this.state.searchResult.map(book => (
+                    <ListGroup.Item action onClick={() => this.handleAdd(book)} key={book.id}>
+                      {`${book.title} - ${book.author && book.author.join(', ')}`}
+                    </ListGroup.Item>
+                  ))}
+                </ListGroup>
+              </Col>
+            </Row>
+          </Container>
+        </div>
       </div>
     );
   }
