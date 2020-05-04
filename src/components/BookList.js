@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { debounce } from 'lodash';
-import { ListGroup, Card, Container, Row, Col } from 'react-bootstrap';
+import { ListGroup, Container, Row, Col, Spinner } from 'react-bootstrap';
 
 import BookItem from './BookItem';
 import Api from '../Api';
@@ -10,7 +10,8 @@ class BookList extends Component {
   state = {
     searchString: '',
     books: [],
-    searchResult: []
+    searchResult: [],
+    loading: false
   };
 
   componentDidMount() {
@@ -33,6 +34,8 @@ class BookList extends Component {
       return;
     }
 
+    this.setState({ loading: true });
+
     const { data } = await Api.get(`search.json?title=${title}&limit=10`);
 
     const result = data.docs.filter((doc) => doc.isbn && doc.isbn.length).map((doc) => ({
@@ -44,6 +47,8 @@ class BookList extends Component {
     }))
 
     this.setState({ searchResult: result });
+
+    this.setState({ loading: false });
   }, 350);
 
   handleInputChange = e => {
@@ -89,7 +94,7 @@ class BookList extends Component {
             />
           ))}
         </Container>
-        
+
         <div className="bookSearch">
           <Container>
             <Row>
@@ -104,13 +109,17 @@ class BookList extends Component {
             </Row>
             <Row>
               <Col>
-                <ListGroup>
-                  {this.state.searchResult.map(book => (
-                    <ListGroup.Item action onClick={() => this.handleAdd(book)} key={book.id}>
-                      {`${book.title} - ${book.author && book.author.join(', ')}`}
-                    </ListGroup.Item>
-                  ))}
-                </ListGroup>
+                {this.state.loading ? (
+                  <Spinner animation="border" variant="primary" />
+                ) : (
+                  <ListGroup>
+                    {this.state.searchResult.map(book => (
+                      <ListGroup.Item action onClick={() => this.handleAdd(book)} key={book.id}>
+                        {`${book.title} - ${book.author && book.author.join(', ')}`}
+                      </ListGroup.Item>
+                    ))}
+                  </ListGroup>
+                )}
               </Col>
             </Row>
           </Container>
