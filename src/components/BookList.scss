@@ -21,6 +21,10 @@ div {
       line-height: 2rem;
     }
 
+    input:focus::placeholder {
+      color: transparent;
+    }
+    
     .spinner-border {
       margin-top: 10px;
     }
