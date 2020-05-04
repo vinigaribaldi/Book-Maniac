@@ -83,7 +83,7 @@ class BookList extends Component {
             <Col xs={2} sm={1}><b>Read</b></Col>
             <Col xs={4} sm={6}><b>Title</b></Col>
             <Col xs={4} sm={4}><b>Author</b></Col>
-            <Col xs={2} sm={1}><b>Remove</b></Col>
+            <Col xs={2} sm={1}></Col>
           </Row>
           {this.state.books.sort((a, b) => a.title < b.title ? -1 : 1).map(book => (
             <BookItem

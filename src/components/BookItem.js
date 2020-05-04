@@ -3,15 +3,14 @@ import PropTypes from 'prop-types';
 import { Row, Col, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
-//import moment from 'moment';
+import moment from 'moment';
 
 function BookItem({ book, toggleRead, onDelete }) {
   
   const renderTooltip = (props) => {
     return (
       <Tooltip id="button-tooltip" {...props}>
-        {/*book.read ? moment(book.readOn).fromNow() : 'Check to mark the book as read.'*/}
-        {book.read ? book.readOn : 'Check to mark the book as read.'}
+        {book.read ? moment(book.readOn).fromNow() : 'Check to mark the book as read.'}
       </Tooltip>
     );
   }
