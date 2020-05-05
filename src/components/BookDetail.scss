@@ -1,0 +1,21 @@
+.card {
+  width: 100%;
+
+  .card-body {
+    width: 100%;
+    text-align: center;
+  }
+
+  .card-text {
+    text-align: left;
+  }
+}
+
+.cover {
+  padding-right: 20px;
+  flex: 0 0 60px;
+
+  img {
+    max-height: 100px;
+  }
+}
