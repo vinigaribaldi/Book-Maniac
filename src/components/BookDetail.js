@@ -35,7 +35,6 @@ class BookDetail extends Component {
   }
 
   render() {
-    console.log(this.state.details);
     return (
       <Card>
         <Card.Body>
