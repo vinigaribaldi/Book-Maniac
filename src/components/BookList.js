@@ -102,7 +102,7 @@ class BookList extends Component {
             .sort((a, b) => (a.title < b.title ? -1 : 1))
             .map((book) => (
               <BookItem
-                key={book}
+                key={book.id}
                 book={book}
                 toggleRead={() => this.handleRead(book)}
                 onDelete={() => this.handleDelete(book)}
