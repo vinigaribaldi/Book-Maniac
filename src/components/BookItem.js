@@ -1,33 +1,30 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Row, Col, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Button, Col, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
 
 function BookItem({ book, toggleRead, onDelete }) {
-  
   const renderTooltip = (props) => {
     return (
-      <Tooltip id="button-tooltip" {...props}>
-        {book.read ? moment(book.readOn).fromNow() : 'Check to mark the book as read.'}
+      <Tooltip id='button-tooltip' {...props}>
+        {book.read
+          ? moment(book.readOn).fromNow()
+          : 'Check to mark the book as read.'}
       </Tooltip>
     );
-  }
+  };
 
   return (
     <Row>
       <Col xs={2} sm={1} className={'read'}>
         <OverlayTrigger
-          placement="top"
+          placement='top'
           delay={{ show: 250, hide: 400 }}
           overlay={renderTooltip}
         >
-          <input
-            type="checkbox"
-            checked={book.read}
-            onChange={toggleRead}
-          />
+          <input type='checkbox' checked={book.read} onChange={toggleRead} />
         </OverlayTrigger>
       </Col>
       <Col xs={4} sm={6}>
@@ -37,7 +34,7 @@ function BookItem({ book, toggleRead, onDelete }) {
         {book.author}
       </Col>
       <Col xs={2} sm={1}>
-        <Button variant="link" size="sm" onClick={onDelete}>
+        <Button variant='link' size='sm' onClick={onDelete}>
           <FontAwesomeIcon icon={faTrashAlt} />
         </Button>
       </Col>

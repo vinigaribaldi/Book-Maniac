@@ -4,7 +4,7 @@ import ReportButton from '../../components/ReportButton';
 
 function Home({ history }) {
   return (
-    <div className="Home">
+    <div className='Home'>
       <div>
         <h1>Book Maniac</h1>
         <ReportButton history={history} />
