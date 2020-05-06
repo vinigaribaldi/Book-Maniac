@@ -43,46 +43,44 @@ class BookDetail extends Component {
         <Card.Body>
           <Card.Title>{this.props.book.title}</Card.Title>
           <Card.Subtitle>{this.state.details.subtitle}</Card.Subtitle>
-          <Card.Text>
-            <Container>
-              <Row>
-                <Col xs={12} sm={3}></Col>
-                <Col xs={12} sm={1}>
-                  <div className='cover'>
-                    <img src={this.state.details.cover} alt='' />
-                  </div>
-                </Col>
-                <Col xs={12} sm={8}>
-                  <Row>
-                    <Col xs={5} sm={2}>
-                      Author:
-                    </Col>
-                    <Col>{this.props.book.author}</Col>
-                  </Row>
-                  <Row>
-                    <Col xs={5} sm={2}>
-                      Publish Date:
-                    </Col>
-                    <Col>{this.state.details.publishDate}</Col>
-                  </Row>
-                  <Row>
-                    <Col xs={5} sm={2}>
-                      Pages:
-                    </Col>
-                    <Col>{this.state.details.numberOfPages}</Col>
-                  </Row>
-                  <Row>
-                    <Col xs={5} sm={2}>
-                      Read On:
-                    </Col>
-                    <Col>
-                      {moment(this.props.book.readOn).format('MMMM Do YYYY')}
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-            </Container>
-          </Card.Text>
+          <Container>
+            <Row>
+              <Col xs={12} sm={3}></Col>
+              <Col xs={12} sm={1}>
+                <div className='cover'>
+                  <img src={this.state.details.cover} alt='' />
+                </div>
+              </Col>
+              <Col xs={12} sm={8}>
+                <Row>
+                  <Col xs={5} sm={2}>
+                    Author:
+                  </Col>
+                  <Col>{this.props.book.author}</Col>
+                </Row>
+                <Row>
+                  <Col xs={5} sm={2}>
+                    Publish Date:
+                  </Col>
+                  <Col>{this.state.details.publishDate}</Col>
+                </Row>
+                <Row>
+                  <Col xs={5} sm={2}>
+                    Pages:
+                  </Col>
+                  <Col>{this.state.details.numberOfPages}</Col>
+                </Row>
+                <Row>
+                  <Col xs={5} sm={2}>
+                    Read On:
+                  </Col>
+                  <Col>
+                    {moment(this.props.book.readOn).format('MMMM Do YYYY')}
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Container>
         </Card.Body>
       </Card>
     );

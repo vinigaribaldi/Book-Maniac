@@ -28,7 +28,6 @@ class BookReport extends Component {
   }
 
   render() {
-    console.log(this.state);
     const months = this.state.readBooks.reduce((months, book) => {
       const bookMonth = new Date(
         book.readDate.getFullYear(),
@@ -61,14 +60,14 @@ class BookReport extends Component {
           );
 
           return (
-            <>
+            <React.Fragment key={m}>
               <h3 className='monthly'>{`${moment(m).format('MMMM YYYY')} - ${
                 filteredBooks.length
               } book(s) read this month`}</h3>
               {filteredBooks.map((book) => (
-                <BookDetail book={book} />
+                <BookDetail key={book.id} book={book} />
               ))}
-            </>
+            </React.Fragment>
           );
         })}
       </div>
